@@ -14,6 +14,7 @@ post '/' => sub {
     $self->redirect_to('show', base64 => $code);
 } => 'encode';
 
+# TODO get rid of that regex as soon as someone releases Mojolicious 2.63
 get '/*base64' => [base64 => qr/.*/s] => sub {
     my $self = shift;
     my $code = $self->param('base64');
