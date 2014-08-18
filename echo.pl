@@ -2,8 +2,7 @@
 
 use Mojolicious::Lite;
 use Mojo::ByteStream 'b';
-
-plugin charset => {Charset => 'UTF-8'};
+use Text::Markdown 'markdown';
 
 get '/' => 'form';
 
@@ -11,14 +10,20 @@ post '/' => sub {
     my $self = shift;
     my $text = $self->param('text');
     my $code = b($text)->encode('UTF-8')->b64_encode->trim;
-    $self->redirect_to('show', base64 => $code);
+    my $surl = $self->url_for('show', base64 => $code);
+    $self->redirect_to($surl->query(md => $self->param('md')));
 } => 'encode';
 
 get '/*base64' => sub {
     my $self = shift;
     my $code = $self->param('base64');
+    my $ismd = $self->param('md');
     my $text = b($code)->b64_decode->decode('UTF-8')->to_string;
-    $self->stash(message => $text);
+    my $html = $ismd ? markdown($text) : undef;
+    $self->stash(
+        message => $text,
+        html    => $html,
+    );
 } => 'show';
 
 app->start;
@@ -27,14 +32,21 @@ __DATA__
 
 @@ form.html.ep
 % layout 'default';
-<form action="<%= url_for 'encode' %>" method="post"><p>
-    <input type="text" name="text" size="20">
-    <input type="submit" value="echo">
-</p></form>
+%= form_for encode => begin
+    %= text_area 'text', cols => 40, rows => 5
+    %= t 'br'
+    %= check_box md => 1 => id => 'md'
+    %= label_for md => 'markdown'
+    %= submit_button 'echo!'
+% end
 
 @@ show.html.ep
 % layout 'default';
-<p id="message"><%= $message %></p>
+% if (stash('html')) {
+    <div id="md"><%== $html =%></div>
+% } else {
+    %= t p => (id => 'single') => $message
+% }
 
 @@ layouts/default.html.ep
 <!doctype html>
@@ -51,7 +63,8 @@ td {
     font-family     : Helvetica, sans-serif;
 }
 input { font-size: inherit }
-#message { font-weight: bold; font-size: 3em }
+label { font-size: .5em }
+#single { font-weight: bold; font-size: 3em }
 </style>
 </head>
 <body>
@@ -66,4 +79,3 @@ input { font-size: inherit }
     View source: http://github.com/memowe/echo
     (c) Mirko "memowe" Westermeier
 -->
-
