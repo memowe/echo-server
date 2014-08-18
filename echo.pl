@@ -36,7 +36,7 @@ __DATA__
     %= text_area 'text', cols => 40, rows => 5
     %= t 'br'
     %= check_box md => 1 => id => 'md'
-    %= label_for md => 'markdown'
+    %= t 'label', for => md => 'markdown'
     %= submit_button 'echo!'
 % end
 
