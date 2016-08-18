@@ -4,26 +4,31 @@ use Mojolicious::Lite;
 use Mojo::ByteStream 'b';
 use Text::Markdown 'markdown';
 
+# show form
 get '/' => 'form';
 
+# form submission: encode and redirect
 post '/' => sub {
     my $self = shift;
-    my $text = $self->param('text');
-    my $code = b($text)->encode('UTF-8')->b64_encode->trim;
-    my $surl = $self->url_for('show', base64 => $code);
+
+    # encode
+    my $b64  = b($self->param('text'))->encode('UTF-8')->b64_encode->trim;
+
+    # redirect
+    my $surl = $self->url_for('show', b64 => $b64);
     $self->redirect_to($surl->query(md => $self->param('md')));
 } => 'encode';
 
-get '/*base64' => sub {
+# encoded query: show
+get '/*b64' => sub {
     my $self = shift;
-    my $code = $self->param('base64');
-    my $ismd = $self->param('md');
-    my $text = b($code)->b64_decode->decode('UTF-8')->to_string;
-    my $html = $ismd ? markdown($text) : undef;
-    $self->stash(
-        message => $text,
-        html    => $html,
-    );
+
+    # decode
+    my $text = b($self->param('b64'))->b64_decode->decode('UTF-8')->to_string;
+    my $html = $self->param('md') ? markdown($text) : undef;
+
+    # done
+    $self->stash(message => $text, html => $html);
 } => 'show';
 
 app->start;
@@ -33,10 +38,11 @@ __DATA__
 @@ form.html.ep
 % layout 'default';
 %= form_for encode => begin
-    %= text_area 'text', cols => 40, rows => 5
-    %= t 'br'
-    %= check_box md => 1 => id => 'md'
-    %= t 'label', for => md => 'markdown'
+    %= text_area text => (cols => 40, rows => 8)
+    <br>
+    %= check_box md => 1 => (id => 'md')
+    %= t label => (for => 'md') => 'markdown'
+    <br>
     %= submit_button 'echo!'
 % end
 
@@ -45,34 +51,21 @@ __DATA__
 % if (stash('html')) {
     <div id="md"><%== $html =%></div>
 % } else {
-    %= t p => (id => 'single') => $message
+    <p id="single"><%= $message %></p>
 % }
 
 @@ layouts/default.html.ep
 <!doctype html>
-<html>
-<head>
-<title>echo</title>
-<style type="text/css">
-html, body { margin: 0; padding: 5%; height: 80% }
-table { height: 100%; width: 100% }
-td {
-    text-align      : center;
-    vertical-align  : middle;
-    font-size       : 2em;
-    font-family     : Helvetica, sans-serif;
-}
-input { font-size: inherit }
-label { font-size: .5em }
-#single { font-weight: bold; font-size: 3em }
-</style>
+<html><head><title>echo</title>
+%= stylesheet begin
+    html, body { margin: 0; padding: 5%; height: 80% }
+    table { height: 100%; width: 100% }
+    td { text-align: center; vertical-align: middle; font-family: sans-serif }
+    #md { font-size: 2em }
+    #single { font-weight: bold; font-size: 3em }
+% end
 </head>
-<body>
-<table><tr><td>
-%== content
-</td></tr></table>
-</body>
-</html>
+<body><table><tr><td><%== content %></td></tr></table></body></html>
 
 <!--
     O HAI. This echo is written in Perl using Mojolicious::Lite
