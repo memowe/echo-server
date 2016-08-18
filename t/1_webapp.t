@@ -56,6 +56,12 @@ $t->post_ok('/', form => {text => $message})->status_is(200)
 $t->post_ok('/', form => {text => 'ßänkju!'})->status_is(200);
 $t->text_is('#single', 'ßänkju!');
 
+# length limit
+my @c       = ('a' .. 'z', 'A' .. 'Z', 0 .. 9);
+my $input   = join '' => map $c[rand @c] => 1 .. 10_000;
+$t->post_ok('/', form => {text => $input})->status_is(400);
+$t->content_is('Too long!');
+
 # markdown echo
 my $markdown = "a  \nи\n\n**d**";
 $t->post_ok('/', form => {text => $markdown, md => 1})->status_is(200);
