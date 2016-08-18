@@ -1,8 +1,9 @@
 #!/usr/bin/env perl
 
 use Mojolicious::Lite;
-use Mojo::ByteStream 'b';
-use Text::Markdown 'markdown';
+use Mojo::Util qw(encode decode b64_encode b64_decode trim);
+use Text::Markdown qw(markdown);
+use Gzip::Faster;
 
 # show form
 get '/' => 'form';
@@ -12,7 +13,7 @@ post '/' => sub {
     my $self = shift;
 
     # encode
-    my $b64  = b($self->param('text'))->encode('UTF-8')->b64_encode->trim;
+    my $b64 = trim b64_encode gzip encode 'UTF-8' => $self->param('text');
 
     # redirect
     my $surl = $self->url_for('show', b64 => $b64);
@@ -24,7 +25,7 @@ get '/*b64' => sub {
     my $self = shift;
 
     # decode
-    my $text = b($self->param('b64'))->b64_decode->decode('UTF-8')->to_string;
+    my $text = decode 'UTF-8' => gunzip b64_decode $self->param('b64');
     my $html = $self->param('md') ? markdown($text) : undef;
 
     # done
