@@ -8,6 +8,7 @@ WriteMakefile(
     PREREQ_PM => {
         'Mojolicious'       => '7.0',
         'Text::Markdown'    => '1.0',
+        'Gzip::Faster'      => '0.14',
     },
     test      => {TESTS => 't/*.t'}
 );
