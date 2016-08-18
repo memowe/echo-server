@@ -10,30 +10,30 @@ get '/' => 'form';
 
 # form submission: encode and redirect
 post '/' => sub {
-    my $self = shift;
+    my $c = shift;
 
     # encode
-    my $b64 = trim b64_encode gzip encode 'UTF-8' => $self->param('text');
+    my $b64 = trim b64_encode gzip encode 'UTF-8' => $c->param('text');
 
     # check length (http://stackoverflow.com/a/417184/1184510)
-    $self->res->code(400) and return $self->render(text => 'Too long!')
+    $c->res->code(400) and return $c->render(text => 'Too long!')
         if length $b64 > 2000;
 
     # redirect
-    my $surl = $self->url_for('show', b64 => $b64);
-    $self->redirect_to($surl->query(md => $self->param('md')));
+    my $surl = $c->url_for('show', b64 => $b64);
+    $c->redirect_to($surl->query(md => $c->param('md')));
 } => 'encode';
 
 # encoded query: show
 get '/*b64' => sub {
-    my $self = shift;
+    my $c = shift;
 
     # decode
-    my $text = decode 'UTF-8' => gunzip b64_decode $self->param('b64');
-    my $html = $self->param('md') ? markdown($text) : undef;
+    my $text = decode 'UTF-8' => gunzip b64_decode $c->param('b64');
+    my $html = $c->param('md') ? markdown($text) : undef;
 
     # done
-    $self->stash(message => $text, html => $html);
+    $c->stash(message => $text, html => $html);
 } => 'show';
 
 app->start;
