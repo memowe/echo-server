@@ -54,7 +54,6 @@ $t->post_ok('/', form => {text => $message})->status_is(200)
 
 # echo with slash in base64
 $t->post_ok('/', form => {text => 'ßänkju!'})->status_is(200);
-like($t->tx->req->url, qr|/w5/DpG5ranUh|, 'right url (with slash)');
 $t->text_is('#single', 'ßänkju!');
 
 # markdown echo
