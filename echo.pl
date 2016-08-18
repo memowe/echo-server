@@ -15,6 +15,10 @@ post '/' => sub {
     # encode
     my $b64 = trim b64_encode gzip encode 'UTF-8' => $self->param('text');
 
+    # check length (http://stackoverflow.com/a/417184/1184510)
+    $self->res->code(400) and return $self->render(text => 'Too long!')
+        if length $b64 > 2000;
+
     # redirect
     my $surl = $self->url_for('show', b64 => $b64);
     $self->redirect_to($surl->query(md => $self->param('md')));
