@@ -5,6 +5,12 @@ use Mojo::Util qw(encode decode b64_encode b64_decode trim);
 use Text::Markdown qw(markdown);
 use Gzip::Faster;
 
+# config
+plugin 'Config' => {default => {
+    max_length  => 2000,
+    hypnotoad   => {listen => ['http://*:4000']},
+}};
+
 # show form
 get '/' => 'form';
 
@@ -17,7 +23,7 @@ post '/' => sub {
 
     # check length (http://stackoverflow.com/a/417184/1184510)
     $c->res->code(400) and return $c->render(text => 'Too long!')
-        if length $b64 > 2000;
+        if length $b64 > $c->config('max_length');
 
     # redirect
     my $surl = $c->url_for('show', b64 => $b64);
