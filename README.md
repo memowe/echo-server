@@ -1,7 +1,6 @@
-# echo
+# echo [![Build Status](https://travis-ci.org/memowe/echo.svg?branch=master)](https://travis-ci.org/memowe/echo)
 
 [tinyurl.com/memowecho](http://tinyurl.com/memowecho)
-[![Build Status](https://travis-ci.org/memowe/echo.svg?branch=master)](https://travis-ci.org/memowe/echo)
 
 ## LICENSE
 
