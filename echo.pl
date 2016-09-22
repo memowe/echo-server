@@ -77,9 +77,4 @@ __DATA__
 % end
 </head>
 <body><table><tr><td><%== content %></td></tr></table></body></html>
-
-<!--
-    O HAI. This echo is written in Perl using Mojolicious::Lite
-    View source: http://github.com/memowe/echo
-    (c) Mirko "memowe" Westermeier
--->
+<!-- View source: http://github.com/memowe/echo -->
