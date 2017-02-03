@@ -6,7 +6,7 @@ use Text::Markdown qw(markdown);
 use Gzip::Faster;
 
 # config
-plugin 'Config' => {default => {
+plugin Config => {default => {
     max_length  => 2000, #http://stackoverflow.com/a/417184/1184510
     hypnotoad   => {listen => ['http://*:4000']},
 }};
