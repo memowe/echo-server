@@ -7,7 +7,7 @@ use Gzip::Faster;
 
 # config
 plugin 'Config' => {default => {
-    max_length  => 2000,
+    max_length  => 2000, #http://stackoverflow.com/a/417184/1184510
     hypnotoad   => {listen => ['http://*:4000']},
 }};
 
@@ -21,7 +21,7 @@ post '/' => sub {
     # encode
     my $b64 = trim b64_encode gzip encode 'UTF-8' => $c->param('text');
 
-    # check length (http://stackoverflow.com/a/417184/1184510)
+    # check length
     $c->res->code(400) and return $c->render(text => 'Too long!')
         if length $b64 > $c->config('max_length');
 
