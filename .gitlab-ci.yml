@@ -1,0 +1,6 @@
+image: perl:latest
+
+test:
+    script:
+        - cpanm --installdeps --notest .
+        - prove -lvr t
