@@ -1,0 +1,29 @@
+0.4     2019-03-14
+    - Perl 5.20 signatures for better readability
+    - Optional QR codes on content pages
+
+0.32    2017-05-03
+    - Improved test structure
+
+0.31    2017-02-03
+    - Awesome examples in README
+
+0.3     2016-08-19
+    - Code redesign
+    - Use gzip for improved content capacity
+    - Add a content length limit check
+    - Add Travis CI conf, license and README documentation
+
+0.2     2014-08-18
+    - CLI is gone
+    - Markdown is here!
+
+0.11    2012-03-20
+    - Simplified catch-all regex (Mojo 2.63)
+
+0.1     2012-03-19
+    - Tests
+    - Command line interface
+
+0.01    2012-03-14
+    - First usable version
