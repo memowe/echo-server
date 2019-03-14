@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 
-use Mojolicious::Lite;
+use Mojolicious::Lite -signatures;
 use Mojo::Util qw(encode decode b64_encode b64_decode trim);
 use Text::Markdown qw(markdown);
 use Gzip::Faster;
@@ -15,8 +15,7 @@ plugin Config => {default => {
 get '/' => 'form';
 
 # form submission: encode and redirect
-post '/' => sub {
-    my $c = shift;
+post '/' => sub ($c) {
 
     # encode
     my $b64 = trim b64_encode gzip encode 'UTF-8' => $c->param('text');
@@ -31,8 +30,7 @@ post '/' => sub {
 } => 'encode';
 
 # encoded query: show
-get '/*b64' => sub {
-    my $c = shift;
+get '/*b64' => sub ($c) {
 
     # decode
     my $text = decode 'UTF-8' => gunzip b64_decode $c->param('b64');
