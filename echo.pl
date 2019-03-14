@@ -60,14 +60,18 @@ __DATA__
 @@ form.html.ep
 % layout 'default';
 %= form_for encode => begin
-    %= text_area text => (cols => 40, rows => 8)
-    <br>
-    %= check_box md => 1 => (id => 'md')
-    %= t label => (for => 'md') => 'markdown'
-    %= check_box qr => 1 => (id => 'qr', checked => 'checked')
-    %= t label => (for => 'qr') => 'QR'
-    <br>
-    %= submit_button 'echo!'
+	%= t div => begin
+		%= text_area text => (cols => 40, rows => 8)
+	% end
+	%= t p => begin
+		%= check_box md => 1 => (id => 'md')
+		%= label_for md => 'markdown'
+		-
+		%= check_box qr => 1 => (id => 'qr', checked => 'checked')
+		%= label_for qr => 'QR'
+		-
+		%= submit_button 'echo!'
+	% end
 % end
 
 @@ show.html.ep
