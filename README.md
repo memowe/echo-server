@@ -12,7 +12,7 @@ A running echo instance can be found here: [tinyurl.com/memowecho][memowecho].
 
 ## DID YOU KNOW ...?
 
-The echo web app has a very short and well-documented [source code][echo-source] and comes with a [test suite][echo-test]. It is still shorter than this README file, even without URLs.
+The echo web app has a very short and well-documented [source code][echo-source] and comes with a [test suite][echo-test]. It is still shorter than this README file, even without the two extra-long URLs.
 
 [markdown]: https://daringfireball.net/projects/markdown/
 [urls-long]: http://stackoverflow.com/a/417184/1184510
