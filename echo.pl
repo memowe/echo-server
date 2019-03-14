@@ -94,4 +94,4 @@ __DATA__
 % end
 </head>
 <body><table><tr><td><%== content %></td></tr></table></body></html>
-<!-- View source: http://github.com/memowe/echo -->
+<!-- View source: https://github.com/memowe/echo -->
