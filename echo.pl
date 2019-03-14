@@ -4,6 +4,7 @@ use Mojolicious::Lite -signatures;
 use Mojo::Util qw(encode decode b64_encode b64_decode trim);
 use Text::Markdown qw(markdown);
 use Gzip::Faster;
+use Image::PNG::QRCode 'qrpng';
 
 # config
 plugin Config => {default => {
@@ -25,11 +26,23 @@ post '/' => sub ($c) {
         if length $b64 > $c->config('max_length');
 
     # redirect
-    my $surl = $c->url_for('show', b64 => $b64);
-    $c->redirect_to($surl->query(md => $c->param('md')));
+    my $surl = $c->url_for('show', b64 => $b64)
+        ->query(md => $c->param('md'), qr => $c->param('qr'));
+    $c->redirect_to($surl);
 } => 'encode';
 
-# encoded query: show
+# render request url as qr code
+get '/qr/*b64' => sub ($c) {
+
+    # prepare
+    my $url = $c->url_for('show', b64 => $c->param('b64'))->to_abs
+        ->query(md => $c->param('md'), qr => 1)->to_string;
+
+    # render PNG data
+    $c->render(format => 'png', data => qrpng(text => $url));
+} => 'qr';
+
+# encoded query: show as text
 get '/*b64' => sub ($c) {
 
     # decode
@@ -51,6 +64,8 @@ __DATA__
     <br>
     %= check_box md => 1 => (id => 'md')
     %= t label => (for => 'md') => 'markdown'
+    %= check_box qr => 1 => (id => 'qr', checked => 'checked')
+    %= t label => (for => 'qr') => 'QR'
     <br>
     %= submit_button 'echo!'
 % end
@@ -62,6 +77,9 @@ __DATA__
 % } else {
     <p id="single"><%= $message %></p>
 % }
+% if (param('qr')) {
+    <p id="qr"><%= image url_for 'qr' %></p>
+% }
 
 @@ layouts/default.html.ep
 <!doctype html>
@@ -70,8 +88,9 @@ __DATA__
     html, body { margin: 0; padding: 5%; height: 80% }
     table { height: 100%; width: 100% }
     td { text-align: center; vertical-align: middle; font-family: sans-serif }
-    #md { font-size: 2em }
-    #single { font-weight: bold; font-size: 3em }
+    div#md { font-size: 2em }
+    p#single { font-weight: bold; font-size: 3em }
+    p#qr { margin-top: 5em }
 % end
 </head>
 <body><table><tr><td><%== content %></td></tr></table></body></html>

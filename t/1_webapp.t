@@ -85,6 +85,11 @@ subtest 'Markdown' => sub {
     is $md_dom_second_str, '<p><strong>d</strong></p>', 'second paragraph';
 };
 
+subtest 'QR image' => sub {
+    $t->post_ok('/', form => {text => 'foo', qr => 1})->status_is(200);
+    $t->element_exists('p#qr img', 'QR image');
+};
+
 done_testing;
 
 __END__
