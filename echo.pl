@@ -82,7 +82,10 @@ __DATA__
     <p id="single"><%= $message %></p>
 % }
 % if (param('qr')) {
-    <p id="qr"><%= image url_for 'qr' %></p>
+    <p id="qr">
+        % my $md = param('md') // 0;
+        %= image url_for('qr')->query(md => $md)
+    </p>
 % }
 
 @@ layouts/default.html.ep
