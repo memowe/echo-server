@@ -7,6 +7,7 @@ use utf8;
 use Test::More;
 use Test::Mojo;
 use FindBin '$Bin';
+use Mojo::UserAgent;
 
 # load echo app
 require "$Bin/../echo.pl";
@@ -87,8 +88,30 @@ subtest 'Markdown' => sub {
 };
 
 subtest 'QR image' => sub {
-    $t->post_ok('/', form => {text => 'foo', qr => 1})->status_is(200);
+    $t->post_ok('/', form => {text => 'foo', md => 0, qr => 1})->status_is(200);
     $t->element_exists('p#qr img', 'QR image');
+    my $url = $t->tx->req->url->to_abs;
+
+    subtest 'Check image content' => sub {
+        plan skip_all => 'set QR_CONTENT to enable this test (remote requests)'
+            unless $ENV{QR_CONTENT};
+        diag "Checking QR content via zxing.org, this may take a while...";
+
+        # request image data
+        my $img_url = $t->tx->res->dom->at('p#qr img')->attr('src');
+        my $img     = $t->get_ok($img_url)->status_is(200)->tx->res->body;
+
+        # send to external qr parsing service
+        my $action  = 'https://zxing.org/w/decode';
+        my $ua      = Mojo::UserAgent->new; $ua->proxy->detect;
+        my $res     = $ua->post($action, form => {f => {content => $img}})->res;
+
+        # extract
+        is $res->code => 200, "Decoding via $action succeeded";
+        my $seltor  = 'table#result tr:first-child td:nth-child(2) pre';
+        my $decoded = $res->dom->at($seltor)->text;
+        is $decoded => $url, 'Correct encoded URL';
+    };
 };
 
 done_testing;
