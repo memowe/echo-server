@@ -1,6 +1,6 @@
 # echo [![Build Status](https://travis-ci.org/memowe/echo.svg?branch=master)](https://travis-ci.org/memowe/echo)
 
-With the form provided by this web app, users can create simple web pages using [Markdown][markdown]. These web pages are self-contained, fully encoded in their own URL. Because of this, it is easy to send huge amounts of text by passing a simple link, possibly shortened by a URL shortener service. Because [URLs can be quite long][urls-long] and this app uses gzip for compression (which works extremely well for text), the amount of encoded content can be surprisingly big (see an example below).
+With the form provided by this web app, users can create simple web pages using [Markdown][markdown]. These web pages are self-contained, fully encoded in their own URL. Because of this, it is easy to send huge amounts of text by passing a simple link, possibly shortened by a URL shortener service. It is also possible to generate a QR code for the page's URL to pass around. Because [URLs can be quite long][urls-long] and this app uses gzip for compression (which works extremely well for text), the amount of encoded content can be surprisingly big (see an example below).
 
 A running echo instance can be found here: [tinyurl.com/memowecho][memowecho].
 
