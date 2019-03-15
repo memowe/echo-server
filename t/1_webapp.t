@@ -14,6 +14,7 @@ require "$Bin/../echo.pl";
 # load tester for echo app
 my $t = Test::Mojo->new;
 $t->ua->max_redirects(1); # we use 302 redirects
+$t->app->log->level('fatal'); # silence
 
 subtest 'Echo form' => sub {
     $t->get_ok('/')->status_is(200)->text_is(title => 'echo');
