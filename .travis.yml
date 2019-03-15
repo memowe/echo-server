@@ -1,4 +1,8 @@
 language: perl
+
+env:
+    - QR_CONTENT=1
+
 perl:
     - "5.28"
     - "5.26"
