@@ -1,0 +1,26 @@
+name: Linux tests
+on:
+  push:
+    branches:
+      - '*'
+  pull_request:
+jobs:
+  perl:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        perl-version:
+          - '5.20'
+          - '5.32'
+    container:
+      image: perl:${{ matrix.perl-version }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: perl -V
+        run: perl -V
+      - name: Install dependencies
+        run: |
+          cpanm -qn --installdeps .
+      - name: Run tests
+        run: |
+          prove -lv t

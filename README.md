@@ -1,4 +1,8 @@
-# echo [![Build Status](https://travis-ci.org/memowe/echo.svg?branch=master)](https://travis-ci.org/memowe/echo)
+# echo
+
+[![Linux tests](https://github.com/memowe/echo-server/actions/workflows/linux-tests.yml/badge.svg)](https://github.com/memowe/echo-server/actions/workflows/linux-tests.yml)
+[![Mac OS tests](https://github.com/memowe/echo-server/actions/workflows/mac-tests.yml/badge.svg)](https://github.com/memowe/echo-server/actions/workflows/mac-tests.yml)
+[![Windows tests](https://github.com/memowe/echo-server/actions/workflows/windows-tests.yml/badge.svg)](https://github.com/memowe/echo-server/actions/workflows/windows-tests.yml)
 
 With the form provided by this web app, users can create simple web pages using [Markdown][markdown]. These web pages are self-contained, fully encoded in their own URL. Because of this, it is easy to send huge amounts of text by passing a simple link, possibly shortened by a URL shortener service. It is also possible to generate a QR code for the page's URL to pass around. Because [URLs can be quite long][urls-long] and this app uses gzip for compression (which works extremely well for text), the amount of encoded content can be surprisingly big (see an example below).
 
@@ -25,7 +29,7 @@ The echo web app has a very short and well-documented [source code][echo-source]
 
 ## LICENSE
 
-Copyright (c) 2012-2019 [Mirko Westermeier][mirko], ([\@memowe][mgh], [mirko@westermeier.de][mmail])
+Copyright (c) 2012-2021 [Mirko Westermeier][mirko], ([\@memowe][mgh], [mirko@westermeier.de][mmail])
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
