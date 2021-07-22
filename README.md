@@ -1,8 +1,6 @@
 # echo
 
-[![Linux tests](https://github.com/memowe/echo-server/actions/workflows/linux-tests.yml/badge.svg)](https://github.com/memowe/echo-server/actions/workflows/linux-tests.yml)
-[![Mac OS tests](https://github.com/memowe/echo-server/actions/workflows/mac-tests.yml/badge.svg)](https://github.com/memowe/echo-server/actions/workflows/mac-tests.yml)
-[![Windows tests](https://github.com/memowe/echo-server/actions/workflows/windows-tests.yml/badge.svg)](https://github.com/memowe/echo-server/actions/workflows/windows-tests.yml)
+[![Tests](https://github.com/memowe/echo-server/actions/workflows/tests.yml/badge.svg)](https://github.com/memowe/echo-server/actions/workflows/tests.yml)
 
 With the form provided by this web app, users can create simple web pages using [Markdown][markdown]. These web pages are self-contained, fully encoded in their own URL. Because of this, it is easy to send huge amounts of text by passing a simple link, possibly shortened by a URL shortener service. It is also possible to generate a QR code for the page's URL to pass around. Because [URLs can be quite long][urls-long] and this app uses gzip for compression (which works extremely well for text), the amount of encoded content can be surprisingly big (see an example below).
 
