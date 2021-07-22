@@ -1,9 +1,5 @@
-name: Linux tests
-on:
-  push:
-    branches:
-      - '*'
-  pull_request:
+name: Tests
+on: [push, pull_request]
 jobs:
   perl:
     runs-on: ubuntu-latest
